@@ -10,6 +10,7 @@ import lombok.Setter;
 @Component
 public class WeatherData {
     
+    private String city;
     private double temp;
     private int humidity ;
     private double wind;
@@ -23,7 +24,9 @@ public class WeatherData {
             + "\nUmidade: "
             + humidity
             + "%"
-            + "Description: "
-            + description;
+            + "\nDescrição: "
+            + description
+            + "\nCidade: "
+            + city;
     }
 }

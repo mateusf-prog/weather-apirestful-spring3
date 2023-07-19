@@ -57,13 +57,6 @@
 			<scope>test</scope>
 		</dependency>
 
-				<!-- https://mvnrepository.com/artifact/me.atlis/nominatim-api -->
-		<dependency>
-			<groupId>me.atlis</groupId>
-			<artifactId>nominatim-api</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
