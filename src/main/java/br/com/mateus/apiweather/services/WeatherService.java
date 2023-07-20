@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.mateus.apiweather.models.CityResponse;
-import br.com.mateus.apiweather.models.WeatherResponse;
+import br.com.mateus.apiweather.models.city.CityResponse;
 import br.com.mateus.apiweather.models.dto.CityData;
 import br.com.mateus.apiweather.models.dto.WeatherData;
+import br.com.mateus.apiweather.models.weather.WeatherResponse;
 
 @Service
 public class WeatherService {
@@ -28,7 +28,7 @@ public class WeatherService {
     private CityData cityData;
 
     public ResponseEntity<?> getWeatherDataByCoordinates(double lat, double lon) {
-        if (validateLatitude(lat) && validateLongitude(lon)) {
+        if (validateLatiduteLongitude(lat, lon)) {
             String apiUrl = OPEN_WEATHER_API_URL + lat + "&lon=" + lon +
             "&units=metric&lang=pt_br&exclude=minutely,hourly,daily,alerts&appid=" + apiKeyOpenWeather; 
             WeatherResponse weatherResponse = restTemplate.getForObject(apiUrl,WeatherResponse.class);
@@ -60,12 +60,12 @@ public class WeatherService {
         }
     }
 
-    public boolean validateLatitude(double latitude) {
-        return latitude >= -90 && latitude <= 90;
-    }
-
-    public boolean validateLongitude(double longitude) {
-        return longitude >= -180 && longitude <= 180;
+    public boolean validateLatiduteLongitude(double latitude, double longitude) {
+        if ((latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180)) {
+            return true;
+        } else{
+            return false;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package br.com.mateus.apiweather.models;
+package br.com.mateus.apiweather.models.city;
 
 import java.util.List;
 
