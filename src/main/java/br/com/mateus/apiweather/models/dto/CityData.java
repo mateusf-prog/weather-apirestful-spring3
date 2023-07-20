@@ -16,6 +16,10 @@ public class CityData {
 
     @Override
     public String toString() {
-        return city + "/" + state + " - " + country;
+        if (city.isEmpty() && country.isEmpty() && state.isEmpty()) {
+            return "No city, state and country information.";
+        } else {
+            return city + "/" + state + "\n" + country; 
+        }
     }
 }

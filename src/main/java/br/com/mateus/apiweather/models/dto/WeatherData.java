@@ -9,24 +9,27 @@ import lombok.Setter;
 @Setter
 @Component
 public class WeatherData {
-    
-    private String city;
+
     private double temp;
     private int humidity ;
     private double wind;
     private String description;
+    private CityData cityData;
 
     @Override
     public String toString() {
-        return "Temperatura: " +
-            + temp 
+        return "Temperatura: " 
+            + String.format("%.1f", temp)
             + " ºC"
             + "\nUmidade: "
             + humidity
             + "%"
-            + "\nDescrição: "
-            + description
-            + "\nCidade: "
-            + city;
+            + "\nVento: "
+            + wind
+            + "km/h\n"
+            + description.toUpperCase()
+            + "\n"
+            + cityData;
     }
 }
+    

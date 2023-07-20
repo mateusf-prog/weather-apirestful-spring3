@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class CityResponse {
     
-    private List<CityLocations> locations;
-
+    private CityInfo info;
+    private List<CityResults> results;
+    private CityOptions options;
 }

@@ -16,25 +16,16 @@ public class WeatherService {
     
     private static final String OPEN_WEATHER_API_URL = "https://api.openweathermap.org/data/3.0/onecall?lat=";
     private static final String MAP_QUEST_API_URL = "https://www.mapquestapi.com/geocoding/v1/reverse?key=";
+
     private String apiKeyOpenWeather = "b3e8ca870c7f18204d67672faacce21d";
     private  String apiKeyMapQuest = "lRcKZSTRNKOtLlmx8gmL3W3FpGC5twxJ";
 
     @Autowired
     private RestTemplate restTemplate;
-
     @Autowired
     private WeatherData weatherData;
-
     @Autowired
     private CityData cityData;
-
-    public boolean validateLatitude(double latitude) {
-        return latitude >= -90 && latitude <= 90;
-    }
-
-    public boolean validateLongitude(double longitude) {
-        return longitude >= -180 && longitude <= 180;
-    }
 
     public ResponseEntity<?> getWeatherDataByCoordinates(double lat, double lon) {
         if (validateLatitude(lat) && validateLongitude(lon)) {
@@ -46,7 +37,7 @@ public class WeatherService {
                 weatherData.setHumidity(weatherResponse.getCurrent().getHumidity());
                 weatherData.setWind(weatherResponse.getCurrent().getWind_speed());
                 weatherData.setDescription(weatherResponse.getCurrent().getWeather().get(0).getDescription());
-                weatherData.setCity(weatherResponse.getTimezone());
+                weatherData.setCityData(getCityByCoordinates(lat, lon));
                 return ResponseEntity.ok(weatherData.toString());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -56,21 +47,25 @@ public class WeatherService {
         }
     }
 
-    public ResponseEntity<?> getCityByCoordinates(double lat, double lon) {
-         if (validateLatitude(lat) && validateLongitude(lon)) {
-            String apiUrl = MAP_QUEST_API_URL + apiKeyMapQuest + "&location=" + lat + "," + lon;
-            CityResponse cityResponse = restTemplate.getForObject(apiUrl,CityResponse.class);
-            if (cityResponse != null) {
-                cityData.setCity(cityResponse.getLocations().get(0).getAdminArea5());
-                cityData.setState(cityResponse.getLocations().get(0).getAdminArea3());
-                cityData.setCountry(cityResponse.getLocations().get(0).getAdminArea1());
-                return ResponseEntity.ok(cityData.toString());
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
+    public CityData getCityByCoordinates(double lat, double lon) {
+        String apiUrl = MAP_QUEST_API_URL + apiKeyMapQuest + "&location=" + lat + "," + lon;
+        CityResponse cityResponse = restTemplate.getForObject(apiUrl,CityResponse.class);
+        if (cityResponse != null) {
+            cityData.setCity(cityResponse.getResults().get(0).getLocations().get(0).getAdminArea5());
+            cityData.setState(cityResponse.getResults().get(0).getLocations().get(0).getAdminArea3());
+            cityData.setCountry(cityResponse.getResults().get(0).getLocations().get(0).getAdminArea1());
+            return cityData;
         } else {
-            return ResponseEntity.ok("Incorrect Latitude or Longitude");
+            return null;
         }
+    }
+
+    public boolean validateLatitude(double latitude) {
+        return latitude >= -90 && latitude <= 90;
+    }
+
+    public boolean validateLongitude(double longitude) {
+        return longitude >= -180 && longitude <= 180;
     }
 }
 
