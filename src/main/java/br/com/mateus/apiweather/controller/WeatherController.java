@@ -19,12 +19,7 @@ public class WeatherController {
     @GetMapping
     public String home() {
         return "Home page!";
-    }
-
-    @GetMapping("/{e}")
-    public String messageError(@PathVariable String e) {
-        return "Invalid URL. Please check the URL entered: " + e;
-    }    
+    }   
 
     @GetMapping("/{lat},{lon}")
     public ResponseEntity<?> getWeatherData (@PathVariable double lat, @PathVariable double lon) {

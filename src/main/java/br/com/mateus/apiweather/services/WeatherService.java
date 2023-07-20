@@ -46,7 +46,7 @@ public class WeatherService {
             return ResponseEntity.ok("Incorrect Latitude or Longitude");
         }
     }
-
+    
     public CityData getCityByCoordinates(double lat, double lon) {
         String apiUrl = MAP_QUEST_API_URL + apiKeyMapQuest + "&location=" + lat + "," + lon;
         CityResponse cityResponse = restTemplate.getForObject(apiUrl,CityResponse.class);
