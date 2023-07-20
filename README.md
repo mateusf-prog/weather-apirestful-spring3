@@ -35,7 +35,7 @@ Ambas api's utilizam uma chave criada para fins de teste e não geram custo.
 Exemplo de respostas (JSON):
 ```json
 
-Endpoint: "/"
+Endpoint: '/'
 Método: GET
 
 # return 
@@ -43,7 +43,7 @@ Método: GET
    Home page!
 }
 
-Endpoint: "/{latitude},{longitude}"
+Endpoint: /{latitude},{longitude}
 ex: /35.4743,-97.5279
 Método: GET
 
