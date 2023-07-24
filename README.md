@@ -69,5 +69,5 @@ Método: GET
 
 ## Testes
 
-Não foi implementado testes nesta api, apenas testes locais simples.
+Ainda implementando testes.
 
