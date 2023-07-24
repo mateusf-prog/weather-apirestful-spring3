@@ -1,6 +1,7 @@
 package br.com.mateus.apiweather;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.mateus.apiweather.exception.ApiException;
+import br.com.mateus.apiweather.exception.LatitudeLongitudeException;
 import br.com.mateus.apiweather.models.city.CityResponse;
 import br.com.mateus.apiweather.models.dto.CityData;
 import br.com.mateus.apiweather.models.dto.WeatherData;
@@ -37,9 +40,7 @@ public class WeatherServiceTest {
     }
 
     @Test
-    public void testResponseApiAdressSucess() {
-
-        // TEST SUCESS 
+    public void testResponseApiAdress_Success() {
         double lat = -23.18;    // valid    
         double lon = -45.88;    // valid
 
@@ -52,5 +53,28 @@ public class WeatherServiceTest {
 
         CityResponse actualCityResponse = weatherService.responseApiAdress(lat, lon);
         assertEquals(expectedCityResponse, actualCityResponse);
+    }
+
+    @Test
+    public void testResponseApiAdress_LatitudeLongitudeException() {
+        double lat = -91;       // invalid    
+        double lon = -45.88;    // valid
+
+        assertThrows(LatitudeLongitudeException.class, () -> {
+            weatherService.responseApiAdress(lat, lon);
+        });
+    }
+
+    @Test
+    public void testResponseApiAdress_ApiException() {
+        double lat = -23.18;    // valid    
+        double lon = -45.88;    // valid
+        String url = "https://www.mapquestapi.com/geocoding/v1/reverse?key=lRcKZSTRNKOtLlmx8gmL3W3FpGC5twxJ&location=-23.18,-45.88"; // invalid
+
+        when(restTemplate.getForObject(url, CityResponse.class)).thenThrow(ApiException.class);
+
+        assertThrows(ApiException.class, () -> {
+            weatherService.responseApiAdress(lat, lon);
+        });
     }
 }

@@ -84,7 +84,7 @@ public class WeatherService {
             throw new LatitudeLongitudeException("Error in entering latitude or longitude!");
         }
     }
-
+    
     public boolean validateLatiduteLongitude(double latitude, double longitude) {
         if ((latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180)) {
             return true;
