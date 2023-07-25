@@ -11,10 +11,12 @@ Ambas api's utilizam uma chave criada para fins de teste e não geram custo.
 
 ## Tecnologias Utilizadas
 
-- **Spring Boot**: Framework Java para desenvolvimento de aplicações web.
-- **Spring Web**: Módulo do Spring para criar aplicativos web RESTful.
-- **Lombok**: Biblioteca para reduzir a verbosidade do código Java através da geração automática de código repetitivo.
+- **Spring Boot**
+- **Spring Web**
+- **Lombok**
 - **Maven**
+- **JUnit**
+- **Mockito**
 
 ## Funcionalidades
 
