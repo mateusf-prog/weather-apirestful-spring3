@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.mateus.apiweather.exception.ApiException;
@@ -23,16 +23,19 @@ import br.com.mateus.apiweather.services.WeatherService;
 @SpringBootTest
 public class WeatherServiceTest {
 
-    @Autowired
+    @InjectMocks
     private WeatherService weatherService;
+    
+    // mocks to be injected into weatherService
     @Mock
     private WeatherData weatherData;
     @Mock
     private CityData cityData;
-    @MockBean
+    @Mock
     private RestTemplate restTemplate;
 
     @Test
+    @DisplayName("test range valid latitude/longitude")
     public void testValidateLatiduteLongitude() {
         WeatherService weatherService = new WeatherService();
         Assertions.assertTrue(weatherService.validateLatiduteLongitude(-23.18, -45.88));
@@ -40,11 +43,10 @@ public class WeatherServiceTest {
     }
 
     @Test
+    @DisplayName("test success method")
     public void testResponseApiAdress_Success() {
         double lat = -23.18;    // valid    
         double lon = -45.88;    // valid
-
-        // url valid (public key)
         String url = "https://www.mapquestapi.com/geocoding/v1/reverse?key=lRcKZSTRNKOtLlmx8gmL3W3FpGC5twxJ&location=-23.18,-45.88";
 
         // expected response
@@ -56,6 +58,7 @@ public class WeatherServiceTest {
     }
 
     @Test
+    @DisplayName("Test values range of Latitude/Longitude")
     public void testResponseApiAdress_LatitudeLongitudeException() {
         double lat = -91;       // invalid    
         double lon = -45.88;    // valid
@@ -66,10 +69,11 @@ public class WeatherServiceTest {
     }
 
     @Test
+    @DisplayName("test if trhow any exception of API MapQuest")
     public void testResponseApiAdress_ApiException() {
         double lat = -23.18;    // valid    
         double lon = -45.88;    // valid
-        String url = "https://www.mapquestapi.com/geocoding/v1/reverse?key=lRcKZSTRNKOtLlmx8gmL3W3FpGC5twxJ&location=-23.18,-45.88"; // invalid
+        String url = "https://www.mapquestapi.com/geocoding/v1/reverse?key=lRcKZSTRNKOtLlmx8gmL3W3FpGC5twxJ&location=-23.18,-45.88"; 
 
         when(restTemplate.getForObject(url, CityResponse.class)).thenThrow(ApiException.class);
 
